@@ -47,37 +47,25 @@ class ClienteContaPage(BasePage):
         """
         Exibe o campo para informar o valor do depósito.
         """
-        WebDriverWait(self.driver, 5).until(
-            ec.element_to_be_clickable(self.botao_deposito)
-        )
-        self.driver.find_element(*self.botao_deposito).click()
+        self.clicar_botao(self.botao_deposito)
 
     def clicar_botao_saque(self):
         """
         Exibe o campo para informar o valor do saque.
         """
-        WebDriverWait(self.driver, 5).until(
-            ec.element_to_be_clickable(self.botao_saque)
-        )
-        self.driver.find_element(*self.botao_saque).click()
+        self.clicar_botao(self.botao_saque)
 
-    def preencher_campo(self, valor):
+    def preencher_campo_valor(self, valor):
         """
         Preenche o campo de valor com o dado informado.
         """
-        WebDriverWait(self.driver, 5).until(
-            ec.visibility_of_element_located(self.campo_formulario)
-        )
-        self.driver.find_element(*self.campo_formulario).send_keys(valor)
+        self.preencher_campo(self.campo_formulario, valor)
 
     def clicar_botao_enviar_formulario(self):
         """
         Clica no botão para submeter o formulário de depósito.
         """
-        WebDriverWait(self.driver, 5).until(
-            ec.element_to_be_clickable(self.botao_formulario)
-        )
-        self.driver.find_element(*self.botao_formulario).click()
+        self.clicar_botao(self.botao_formulario)
 
     def clicar_botao_alterar_conta(self, numero_conta):
         """

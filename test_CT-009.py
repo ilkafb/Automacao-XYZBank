@@ -13,7 +13,7 @@ class TestCT009:
         numero_conta_inicial, valor_conta_inicial, moeda_conta_inicial = abrir_pagina_conta_cliente.obter_informacoes()
 
         abrir_pagina_conta_cliente.clicar_botao_deposito()
-        abrir_pagina_conta_cliente.preencher_campo(valor_a_ser_depositado)
+        abrir_pagina_conta_cliente.preencher_campo_valor(valor_a_ser_depositado)
         abrir_pagina_conta_cliente.clicar_botao_enviar_formulario()
 
         numero_conta_final, valor_conta_final, moeda_conta_final = abrir_pagina_conta_cliente.obter_informacoes()

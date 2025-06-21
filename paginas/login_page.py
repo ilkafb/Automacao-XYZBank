@@ -8,7 +8,8 @@ class LoginPage(BasePage):
     Classe que representa a página de login.
     """
     url = 'https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login'
-    botao_login = (By.XPATH, "//button[text()='Customer Login']")
+    botao_login_cliente = (By.XPATH, "//button[text()='Customer Login']")
+    botao_login_gerente = (By.XPATH, "//button[text()='Bank Manager Login']")
 
     def __init__(self, browser):
         """
@@ -32,7 +33,10 @@ class LoginPage(BasePage):
         """
         Navega para página do login do cliente.
         """
-        WebDriverWait(self.driver, 5).until(
-            ec.element_to_be_clickable(self.botao_login)
-        )
-        self.driver.find_element(*self.botao_login).click()
+        self.clicar_botao(self.botao_login_cliente)
+
+    def clicar_botao_gerente_login(self):
+        """
+        Navega para página do login do gerente.
+        """
+        self.clicar_botao(self.botao_login_gerente)

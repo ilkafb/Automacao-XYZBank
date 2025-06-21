@@ -1,6 +1,7 @@
 import pytest
 from cliente_conta_page import ClienteContaPage
 from cliente_login_page import ClienteLoginPage
+from gerente_page import GerentePage
 from login_page import LoginPage
 
 def pytest_addoption(parser):
@@ -35,3 +36,15 @@ def abrir_pagina_conta_cliente(abrir_pagina_inicial):
     cliente_conta_page = ClienteContaPage(cliente_login_page.driver)
 
     yield  cliente_conta_page
+
+@pytest.fixture
+def abrir_pagina_gerente(abrir_pagina_inicial):
+    """
+    Configurações para abrir a página do gerente.
+    """
+    if abrir_pagina_inicial.checar_url_login():
+        abrir_pagina_inicial.clicar_botao_gerente_login()
+
+    gerente_page = GerentePage(abrir_pagina_inicial.driver)
+
+    yield  gerente_page
