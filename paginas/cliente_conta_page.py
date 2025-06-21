@@ -2,6 +2,7 @@ from selenium.webdriver.common.by import By
 from base_page import BasePage
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
+from selenium.webdriver.support.ui import Select
 
 class ClienteContaPage(BasePage):
     """
@@ -14,6 +15,7 @@ class ClienteContaPage(BasePage):
     campo_formulario = (By.CSS_SELECTOR, 'input')
     botao_formulario = (By.CSS_SELECTOR, '[type="submit"]')
     span_mensagem_aviso =  (By.CSS_SELECTOR, 'span.error')
+    select_conta = (By.ID, "accountSelect")
 
     def __init__(self, driver):
         """
@@ -76,6 +78,14 @@ class ClienteContaPage(BasePage):
             ec.element_to_be_clickable(self.botao_formulario)
         )
         self.driver.find_element(*self.botao_formulario).click()
+
+    def clicar_botao_alterar_conta(self, numero_conta):
+        """
+        Clica no botão para alterar a conta do cliente.
+        """
+        select_element = WebDriverWait(self.driver, 5).until(ec.presence_of_element_located(self.select_conta))
+        select = Select(select_element)
+        select.select_by_value(f'number:{numero_conta}')
 
     def mensagem_visivel(self):
         """
