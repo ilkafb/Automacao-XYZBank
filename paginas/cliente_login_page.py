@@ -30,7 +30,7 @@ class ClienteLoginPage(BasePage):
         """
         select_element = WebDriverWait(self.driver, 5).until(ec.presence_of_element_located(self.select_cliente))
         select = Select (select_element)
-        select.select_by_value("2")
+        select.select_by_value("1")
 
     def clicar_botao_login(self):
         """

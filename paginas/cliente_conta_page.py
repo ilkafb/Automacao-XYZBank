@@ -9,6 +9,7 @@ class ClienteContaPage(BasePage):
     """
     url = 'https://www.globalsqa.com/angularJs-protractor/BankingProject/#/account'
     botao_deposito = (By.CSS_SELECTOR, '[ng-class="btnClass2"]')
+    botao_saque = (By.CSS_SELECTOR, '[ng-class="btnClass3"]')
     div_informacoes = (By.CSS_SELECTOR, 'div.center')
     campo_formulario = (By.CSS_SELECTOR, 'input')
     botao_formulario = (By.CSS_SELECTOR, '[type="submit"]')
@@ -48,6 +49,15 @@ class ClienteContaPage(BasePage):
             ec.element_to_be_clickable(self.botao_deposito)
         )
         self.driver.find_element(*self.botao_deposito).click()
+
+    def clicar_botao_saque(self):
+        """
+        Exibe o campo para informar o valor do saque.
+        """
+        WebDriverWait(self.driver, 5).until(
+            ec.element_to_be_clickable(self.botao_saque)
+        )
+        self.driver.find_element(*self.botao_saque).click()
 
     def preencher_campo(self, valor):
         """
