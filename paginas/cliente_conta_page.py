@@ -1,5 +1,5 @@
 from selenium.webdriver.common.by import By
-from base_page import BasePage
+from paginas.base_page import BasePage
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import Select

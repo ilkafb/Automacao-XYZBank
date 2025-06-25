@@ -1,6 +1,3 @@
-from conftest import abrir_pagina_gerente
-
-
 class TestCT001:
     """
     Classe de teste para criar um cliente.

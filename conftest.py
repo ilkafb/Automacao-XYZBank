@@ -1,8 +1,8 @@
 import pytest
-from cliente_conta_page import ClienteContaPage
-from cliente_login_page import ClienteLoginPage
-from gerente_page import GerentePage
-from login_page import LoginPage
+from paginas.cliente_conta_page import ClienteContaPage
+from paginas.cliente_login_page import ClienteLoginPage
+from paginas.gerente_page import GerentePage
+from paginas.login_page import LoginPage
 
 def pytest_addoption(parser):
     """
