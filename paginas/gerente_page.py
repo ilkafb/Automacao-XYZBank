@@ -16,7 +16,8 @@ class GerentePage(BasePage):
     campo_codigo_postal = (By.CSS_SELECTOR, '[ng-model="postCd"]')
     botao_formulario = (By.CSS_SELECTOR, '[type="submit"]')
     tabela_clientes = (By.TAG_NAME, 'table')
-    
+    campo_pesquisar_cliente = (By.CSS_SELECTOR, '[ng-model="searchCustomer"]')
+
     def __init__(self, driver):
         """
         Inicializa a classe com o driver.
@@ -72,3 +73,10 @@ class GerentePage(BasePage):
         ["Albus", "Dumbledore", "E55656", ["1010", "1011", "1012"]],
         ["Neville", "Longbottom", "E89898", ["1013", "1014", "1015"]],
         ])
+
+    def pesquisar_cliente(self, nome_cliente):
+        """
+        Preenche o campo de pesquisa para filtrar a lista de clientes.
+        """
+        self.preencher_campo(self.campo_pesquisar_cliente, nome_cliente)
+        
