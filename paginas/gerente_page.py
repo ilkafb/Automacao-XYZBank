@@ -10,11 +10,13 @@ class GerentePage(BasePage):
     """
     url = 'https://www.globalsqa.com/angularJs-protractor/BankingProject/#/manager'
     botao_adicionar_cliente = (By.CSS_SELECTOR, '[ng-class="btnClass1"]')
+    botao_clientes = (By.CSS_SELECTOR, '[ng-class="btnClass3"]')
     campo_primeiro_nome = (By.CSS_SELECTOR, '[ng-model="fName"]')
     campo_ultimo_nome = (By.CSS_SELECTOR, '[ng-model="lName"]')
     campo_codigo_postal = (By.CSS_SELECTOR, '[ng-model="postCd"]')
     botao_formulario = (By.CSS_SELECTOR, '[type="submit"]')
-
+    tabela_clientes = (By.TAG_NAME, 'table')
+    
     def __init__(self, driver):
         """
         Inicializa a classe com o driver.
@@ -33,6 +35,12 @@ class GerentePage(BasePage):
         """
         self.clicar_botao(self.botao_adicionar_cliente)
 
+    def clicar_botao_clientes(self):
+        """
+        Exibe a tela de lista dos clientes.
+        """
+        self.clicar_botao(self.botao_clientes)
+
     def preencher_campos_adicionar_cliente(self, primeiro_nome, ultimo_nome, codigo_postal):
         """
         Preenche os campos de valor com o dado informado.
@@ -46,3 +54,21 @@ class GerentePage(BasePage):
         Clica no botão para submeter o formulário de depósito.
         """
         self.clicar_botao(self.botao_formulario)
+
+    def verificar_cabecalho_tabela_clientes(self):
+        """
+        Verifica o cabeçalho da tabela clientes.
+        """
+        return self.verificar_cabecalho_tabela(self.tabela_clientes, ["First Name", "Last Name", "Post Code", "Account Number", "Delete Customer"])
+
+    def verificar_linhas_tabela_clientes(self):
+        """
+        Verifica as linhas da tabela clientes.
+        """
+        return self.verificar_linhas_tabela(self.tabela_clientes, [
+        ["Hermoine", "Granger", "E859AB", ["1001", "1002", "1003"]],
+        ["Harry", "Potter", "E725JB", ["1004", "1005", "1006"]],
+        ["Ron", "Weasly", "E55555", ["1007", "1008", "1009"]],
+        ["Albus", "Dumbledore", "E55656", ["1010", "1011", "1012"]],
+        ["Neville", "Longbottom", "E89898", ["1013", "1014", "1015"]],
+        ])
