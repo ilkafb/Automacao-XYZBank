@@ -112,3 +112,15 @@ class BasePage:
                 return False
 
         return True
+
+    def esperar_pelo_numero_de_linhas_da_tabela(self, seletor_tabela, numero_esperado):
+        """
+        Espera explícita até que uma tabela tenha um número específico de linhas.
+        """
+        wait = WebDriverWait(self.driver, 5) 
+        try:
+            wait.until(lambda driver: 
+                len(driver.find_element(*seletor_tabela).find_elements(By.CSS_SELECTOR, 'tbody tr')) == numero_esperado
+            )
+        except:
+            raise TimeoutError(f"A tabela não atingiu o número de {numero_esperado} linhas no tempo esperado.")
