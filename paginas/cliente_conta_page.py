@@ -9,6 +9,7 @@ class ClienteContaPage(BasePage):
     Classe que representa a página de conta do cliente.
     """
     url = 'https://www.globalsqa.com/angularJs-protractor/BankingProject/#/account'
+    botao_historico_transacoes = (By.CSS_SELECTOR, '[ng-class="btnClass1"]')
     botao_deposito = (By.CSS_SELECTOR, '[ng-class="btnClass2"]')
     botao_saque = (By.CSS_SELECTOR, '[ng-class="btnClass3"]')
     div_informacoes = (By.CSS_SELECTOR, 'div.center')
@@ -42,6 +43,12 @@ class ClienteContaPage(BasePage):
         valor_conta = float(partes[1].split(" : ")[1])
         moeda_conta = partes[2].split(" : ")[1]
         return numero_conta, valor_conta, moeda_conta
+
+    def clicar_botao_historico_transacoes(self):
+        """
+        Clica no botão para exibir o histórico de transações.
+        """
+        self.clicar_botao(self.botao_historico_transacoes)
 
     def clicar_botao_deposito(self):
         """

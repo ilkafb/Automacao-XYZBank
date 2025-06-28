@@ -3,6 +3,7 @@ from paginas.cliente_conta_page import ClienteContaPage
 from paginas.cliente_login_page import ClienteLoginPage
 from paginas.gerente_page import GerentePage
 from paginas.login_page import LoginPage
+from paginas.cliente_transacoes_page import ClienteTransacoesPage
 
 def pytest_addoption(parser):
     """
@@ -36,6 +37,17 @@ def abrir_pagina_conta_cliente(abrir_pagina_inicial):
     cliente_conta_page = ClienteContaPage(cliente_login_page.driver)
 
     yield  cliente_conta_page
+
+@pytest.fixture
+def abrir_pagina_transacoes_cliente(abrir_pagina_conta_cliente):
+    """
+    Configurações para abrir a página de transações do cliente.
+    """
+    abrir_pagina_conta_cliente.clicar_botao_historico_transacoes()
+
+    cliente_transacoes_page = ClienteTransacoesPage(abrir_pagina_conta_cliente.driver)
+
+    yield  cliente_transacoes_page
 
 @pytest.fixture
 def abrir_pagina_gerente(abrir_pagina_inicial):

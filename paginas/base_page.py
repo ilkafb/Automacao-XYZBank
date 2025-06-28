@@ -136,7 +136,14 @@ class BasePage:
             if cabecalho_esperado != cabecalho_real:
                 return False
         return True
-            
+    
+    def obter_quantidade_linhas_tabela(self, seletor_tabela):
+        """
+        Obtém a quantidade de linhas de uma tabela
+        """
+        minha_tabela_linhas = self._obter_linhas_conteudo_tabela(seletor_tabela)
+        return len(minha_tabela_linhas)
+
     def verificar_linhas_tabela(self, seletor_tabela, linhas):
         """
         Verificar se as linhas correspondem com o esperado
