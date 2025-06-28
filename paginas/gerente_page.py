@@ -2,7 +2,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 from paginas.base_page import BasePage
-
+from selenium.webdriver.support.ui import Select
 
 class GerentePage(BasePage):
     """
@@ -10,6 +10,7 @@ class GerentePage(BasePage):
     """
     url = 'https://www.globalsqa.com/angularJs-protractor/BankingProject/#/manager'
     botao_adicionar_cliente = (By.CSS_SELECTOR, '[ng-class="btnClass1"]')
+    botao_abrir_conta_cliente = (By.CSS_SELECTOR, '[ng-class="btnClass2"]')
     botao_clientes = (By.CSS_SELECTOR, '[ng-class="btnClass3"]')
     campo_primeiro_nome = (By.CSS_SELECTOR, '[ng-model="fName"]')
     campo_ultimo_nome = (By.CSS_SELECTOR, '[ng-model="lName"]')
@@ -18,6 +19,8 @@ class GerentePage(BasePage):
     tabela_clientes = (By.TAG_NAME, 'table')
     campo_pesquisar_cliente = (By.CSS_SELECTOR, '[ng-model="searchCustomer"]')
     botao_deletar_cliente = (By.TAG_NAME, 'button')
+    select_cliente = (By.ID, "userSelect")
+    select_moeda = (By.ID, "currency")
 
     lista_clientes = [
         ["Hermoine", "Granger", "E859AB", ["1001", "1002", "1003"]],
@@ -44,6 +47,12 @@ class GerentePage(BasePage):
         Exibe os campos para criar um novo cliente.
         """
         self.clicar_botao(self.botao_adicionar_cliente)
+    
+    def clicar_botao_abrir_conta_cliente(self):
+        """
+        Exibe os campos para criar uma conta para um cliente.
+        """
+        self.clicar_botao(self.botao_abrir_conta_cliente)
 
     def clicar_botao_clientes(self):
         """
@@ -58,6 +67,18 @@ class GerentePage(BasePage):
         self.preencher_campo(self.campo_primeiro_nome, primeiro_nome)
         self.preencher_campo(self.campo_ultimo_nome, ultimo_nome)
         self.preencher_campo(self.campo_codigo_postal, codigo_postal)
+
+    def abrir_conta_primeiro_cliente(self):
+        """
+        Abre uma conta para o primeiro cliente da lista.
+        """
+        select_cliente = WebDriverWait(self.driver, 5).until(ec.presence_of_element_located(self.select_cliente))
+        select_moeda = WebDriverWait(self.driver, 5).until(ec.presence_of_element_located(self.select_moeda))
+        
+        selects = [Select(select_cliente), Select(select_moeda)]
+
+        for select in selects:
+            select.select_by_visible_text(select.options[1].text)
 
     def clicar_botao_enviar_formulario(self):
         """
@@ -76,6 +97,30 @@ class GerentePage(BasePage):
         Verifica as linhas da tabela clientes.
         """
         return self.verificar_linhas_tabela(self.tabela_clientes, self.lista_clientes)
+
+    def verificar_cliente(self, primeiro_nome, ultimo_nome, codigo_postal):
+        """
+        Verifica se o cliente está na tabela de clientes.
+        """
+        ultima_linha = self.obter_ultima_linha_tabela(self.tabela_clientes)
+        if ultima_linha:
+            celulas = ultima_linha.find_elements(By.TAG_NAME, 'td')
+            if len(celulas) == 5:
+                return (primeiro_nome in celulas[0].text and
+                        ultimo_nome in celulas[1].text and
+                        codigo_postal in celulas[2].text)
+        return False
+
+    def verificar_conta_primeiro_cliente(self, numero_conta):
+        """
+        Verifica se a conta do primeiro cliente corresponde ao número fornecido.
+        """
+        primeira_linha = self.obter_primeira_linha_tabela(self.tabela_clientes)
+        if primeira_linha:
+            celulas = primeira_linha.find_elements(By.TAG_NAME, 'td')
+            if len(celulas) == 5:
+                return numero_conta in self.obter_numeros_contas(celulas[3].text)
+        return False
 
     def pesquisar_cliente(self, nome_cliente):
         """

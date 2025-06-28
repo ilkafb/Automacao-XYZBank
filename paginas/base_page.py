@@ -66,6 +66,13 @@ class BasePage:
         Obter a mensagem de alerta
         """
         return WebDriverWait(self.driver, 5).until(ec.alert_is_present()).text
+    
+    def fechar_mensagem_alerta(self):
+        """
+        Fecha a mensagem de alerta
+        """
+        alerta = WebDriverWait(self.driver, 5).until(ec.alert_is_present())
+        alerta.accept()
 
     def _buscar_elemento(self, seletor):
         """
@@ -84,14 +91,35 @@ class BasePage:
         minha_tabela_linhas = minha_tabela_tbody.find_elements(By.TAG_NAME, 'tr')
         return minha_tabela_linhas
     
+    def _obter_linha_tabela(self, seletor_tabela, numero_linha):
+        """
+        Obter uma linha específica de uma tabela
+        """
+        minha_tabela_linhas = self._obter_linhas_conteudo_tabela(seletor_tabela)
+        total_linhas = len(minha_tabela_linhas)
+
+        if not (-total_linhas <= numero_linha < total_linhas):
+            raise IndexError("Índice de linha fora do intervalo da tabela.")
+
+        return minha_tabela_linhas[numero_linha]
+    
     def obter_primeira_linha_tabela(self, seletor_tabela):
         """
         Obter a primeira linha de uma tabela
         """
-        minha_tabela_linhas = self._obter_linhas_conteudo_tabela(seletor_tabela)
-        if minha_tabela_linhas:
-            return minha_tabela_linhas[0]
-        return None
+        return self._obter_linha_tabela(seletor_tabela, 0)
+    
+    def obter_ultima_linha_tabela(self, seletor_tabela):
+        """
+        Obter a última linha de uma tabela
+        """
+        return self._obter_linha_tabela(seletor_tabela, -1)
+
+    def obter_numeros_contas(self, texto_linha_dados_contas):
+        """
+        Obter os números de contas de uma tabela
+        """
+        return [int(n) for n in texto_linha_dados_contas.split(" ")] if texto_linha_dados_contas else []
 
     def verificar_cabecalho_tabela(self, seletor_tabela, cabecalhos):
         """
