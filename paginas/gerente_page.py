@@ -17,6 +17,15 @@ class GerentePage(BasePage):
     botao_formulario = (By.CSS_SELECTOR, '[type="submit"]')
     tabela_clientes = (By.TAG_NAME, 'table')
     campo_pesquisar_cliente = (By.CSS_SELECTOR, '[ng-model="searchCustomer"]')
+    botao_deletar_cliente = (By.TAG_NAME, 'button')
+
+    lista_clientes = [
+        ["Hermoine", "Granger", "E859AB", ["1001", "1002", "1003"]],
+        ["Harry", "Potter", "E725JB", ["1004", "1005", "1006"]],
+        ["Ron", "Weasly", "E55555", ["1007", "1008", "1009"]],
+        ["Albus", "Dumbledore", "E55656", ["1010", "1011", "1012"]],
+        ["Neville", "Longbottom", "E89898", ["1013", "1014", "1015"]],
+    ]
 
     def __init__(self, driver):
         """
@@ -66,13 +75,7 @@ class GerentePage(BasePage):
         """
         Verifica as linhas da tabela clientes.
         """
-        return self.verificar_linhas_tabela(self.tabela_clientes, [
-        ["Hermoine", "Granger", "E859AB", ["1001", "1002", "1003"]],
-        ["Harry", "Potter", "E725JB", ["1004", "1005", "1006"]],
-        ["Ron", "Weasly", "E55555", ["1007", "1008", "1009"]],
-        ["Albus", "Dumbledore", "E55656", ["1010", "1011", "1012"]],
-        ["Neville", "Longbottom", "E89898", ["1013", "1014", "1015"]],
-        ])
+        return self.verificar_linhas_tabela(self.tabela_clientes, self.lista_clientes)
 
     def pesquisar_cliente(self, nome_cliente):
         """
@@ -80,3 +83,23 @@ class GerentePage(BasePage):
         """
         self.preencher_campo(self.campo_pesquisar_cliente, nome_cliente)
         
+    def deletar_primeiro_cliente(self):
+        """
+        Deleta o primeiro cliente da lista.
+        """ 
+        WebDriverWait(self.driver, 5).until(ec.visibility_of_element_located(self.tabela_clientes))
+
+        primeira_linha_tabela_antes_delecao = self.obter_primeira_linha_tabela(self.tabela_clientes)
+        if primeira_linha_tabela_antes_delecao:
+            botao_deletar = primeira_linha_tabela_antes_delecao.find_element(*self.botao_deletar_cliente)
+
+            self.clicar_botao(botao_deletar)
+        else:
+            raise Exception("Nenhum cliente encontrado na tabela.")
+        
+    def primeiro_cliente_deletado(self):
+        """
+        Verifica se o primeiro cliente foi deletado.
+        """
+        lista_clientes_esperada = self.lista_clientes[1:]
+        return self.verificar_linhas_tabela(self.tabela_clientes, lista_clientes_esperada)

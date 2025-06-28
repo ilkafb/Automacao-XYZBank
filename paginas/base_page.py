@@ -3,6 +3,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.common.by import By
+from selenium.webdriver.remote.webelement import WebElement
 
 class BasePage:
     """
@@ -55,7 +56,10 @@ class BasePage:
         WebDriverWait(self.driver, 5).until(
             ec.element_to_be_clickable(botao)
         )
-        self.driver.find_element(*botao).click()
+        if isinstance(botao, WebElement):
+            botao.click()
+        else:
+            self.driver.find_element(*botao).click()
 
     def obter_mensagem_alerta(self):
         """
@@ -71,6 +75,24 @@ class BasePage:
             ec.presence_of_element_located(seletor)
         )
     
+    def _obter_linhas_conteudo_tabela(self, seletor_tabela):
+        """
+        Obter as linhas de conteúdo de uma tabela
+        """
+        minha_tabela = self._buscar_elemento(seletor_tabela)
+        minha_tabela_tbody = minha_tabela.find_element(By.TAG_NAME, 'tbody')
+        minha_tabela_linhas = minha_tabela_tbody.find_elements(By.TAG_NAME, 'tr')
+        return minha_tabela_linhas
+    
+    def obter_primeira_linha_tabela(self, seletor_tabela):
+        """
+        Obter a primeira linha de uma tabela
+        """
+        minha_tabela_linhas = self._obter_linhas_conteudo_tabela(seletor_tabela)
+        if minha_tabela_linhas:
+            return minha_tabela_linhas[0]
+        return None
+
     def verificar_cabecalho_tabela(self, seletor_tabela, cabecalhos):
         """
         Verificar se o cabeçalho corresponde com o esperado
@@ -91,9 +113,7 @@ class BasePage:
         """
         Verificar se as linhas correspondem com o esperado
         """
-        minha_tabela = self._buscar_elemento(seletor_tabela)
-        minha_tabela_tbody = minha_tabela.find_element(By.TAG_NAME, 'tbody')
-        minha_tabela_linhas = minha_tabela_tbody.find_elements(By.TAG_NAME, 'tr')
+        minha_tabela_linhas = self._obter_linhas_conteudo_tabela(seletor_tabela)
         if len(linhas) != len(minha_tabela_linhas):
             return False
 
